@@ -2,7 +2,7 @@
 
 “*In God we trust; all others bring data.*” — Attributed to W. Edwards Deming and George Box
 
-<img src="images/iris-TD-5-X-Arial.svg" width="400" align="right">This course introduces students to the key processes, models, and concepts of machine learning for tabular/structured data, such as:
+<img src="images/iris-TD-5-X-Arial.svg" width="250" align="right">This course introduces students to the key processes, models, and concepts of machine learning for tabular/structured data, such as:
 
 * data cleaning
 * dealing with missing data
@@ -53,7 +53,7 @@ All lectures will be online via zoom thanks to COVID.
 |--------|--------|--------|
 |[Linear models](https://github.com/parrt/msds621/raw/master/projects/linreg/linreg.pdf)| 10%| Tue Feb 9, 10:00AM |
 |[Naive Bayes](https://github.com/parrt/msds621/blob/master/projects/bayes/bayes.ipynb) | 8% | Fri Feb 19, 11:59PM |
-|[Decision trees](https://github.com/parrt/msds621/blob/master/projects/dtree/dtree.md) | 15% | Mon Feb 25, 11:59PM |
+|[Decision trees](https://github.com/parrt/msds621/blob/master/projects/dtree/dtree.md) | 15% | Thur Mar 4, 11:59PM |
 |[Random Forest](https://github.com/parrt/msds621/blob/master/projects/rf/rf.md) | 12% | Fri Mar 12, 11:59PM |
 |Exam 1| 27%| Tue Feb 23, 2PM-3:30PM |
 |Exam 2| 28%| Thu, Mar 11 10AM-11:30AM |
@@ -106,17 +106,21 @@ The first lecture is an overview of the entire machine learning process:
 
 <img align="right" src="images/L1L2contour.png" width="180">
 
+This topic more or less finishes off the linear regression course you just finished.
+
 * [Review of linear models](https://github.com/parrt/msds621/raw/master/lectures/review-linear-models.pdf) (slides) (Day 1)
 	* [Lab: Plotting decision surfaces for linear models](https://nbviewer.jupyter.org/github/parrt/msds621/blob/master/labs/linear-models/decision-surfaces.ipynb) (Day 1)
 * [Regularization of linear models L1, L2](https://github.com/parrt/msds621/raw/master/lectures/regularization.pdf) (slides) (Day 2)
 	* [Lab: Exploring regularization for linear regression](https://nbviewer.jupyter.org/github/parrt/msds621/blob/master/labs/linear-models/regularization-regr.ipynb) (Day 2)
-	* [Lab: Regularization for logistic regression](https://nbviewer.jupyter.org/github/parrt/msds621/blob/master/labs/linear-models/regularization-logi.ipynb) (Day 2)
+	* [Lab: Regularization for logistic regression](https://nbviewer.jupyter.org/github/parrt/msds621/blob/master/labs/linear-models/regularization-logi.ipynb) (Day 3)
 	* See my deep dive: [A visual explanation for regularization of linear models](https://explained.ai/regularization/index.html)
 * [Gradient Descent optimization](https://github.com/parrt/msds621/raw/master/lectures/gradient-descent.pdf) (slides) (Day 3)
 	* [Lab: Gradient descent in action](https://nbviewer.jupyter.org/github/parrt/msds621/blob/master/labs/linear-models/gradient-descent.ipynb) (Day 3)
 * (*[Regularization project](https://github.com/parrt/msds621/raw/master/projects/linreg/linreg.pdf)*)
 
 ## Models
+
+<img align="right" src="images/boston-TD-3-X-Arial.png" width="300">
 
 We will learn 3 models in depth for this course: naive bayes, decision trees, and random forests but will examine k-nearest-neighbor (kNN) briefly.
 
@@ -137,21 +141,34 @@ We will learn 3 models in depth for this course: naive bayes, decision trees, an
 
 ## Model assessment
 
+<img src="images/log-dec.svg" width="150" align="right">
+
 * [Model assessment](https://github.com/parrt/msds621/raw/master/lectures/model-assessment.pdf) (slides) (Day 10)
 * [Regressor and classifier metrics](https://github.com/parrt/msds621/raw/master/lectures/metrics.pdf) (slides) (Day 10)
 
 
 ## Mechanics
 
+<img src="images/split-str.png" width="150" align="right">
+
 * [Preparing data for modeling](https://github.com/parrt/msds621/raw/master/lectures/data-prep.pdf) (slides) (Day 11)
 * [Basic feature engineering](https://github.com/parrt/msds621/raw/master/lectures/feature-engineering.pdf) (slides) (Day 12, 13 (didn't get to log(y) discussion))
 
 ## Model interpretation
 
+<img src="images/heatmap.png" width="150" align="right">
+
 * [Feature importance](https://github.com/parrt/msds621/raw/master/lectures/feature-importance.pdf) (slides) (Day 14)
 * Partial dependence
 
+<br>
+<br>
+
 ## Unsupervised learning
+
+<img src="images/clustering.png" width="150" align="right">
+
+Clustering isn't used nearly as much as supervised learning, but it's an important part of your education  and is extremely useful in in certain circumstances, such as image color quantization. (Image credit [Wikipedia](https://en.wikipedia.org/wiki/Color_quantization).)
 
 * [Clustering](https://github.com/parrt/msds621/raw/master/lectures/clustering.pdf) (slides)  (Day 14)
   * k-means clustering
