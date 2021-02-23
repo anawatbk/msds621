@@ -10,17 +10,17 @@ You will work in git repo `rf`-*userid* and create `rf.py` in the root directory
 
 ## Description
 
-Classification and regression trees do an excellent job of fitting a model to the training data. Unfortunately, decision trees are a little too good and they overfit like mad, meaning that they do not generalize well to previously-unseen test data. To increase generality, random forests use a collection of decision trees that have been weakened to make them more independent. We trade a bit of bias for dramatically improved generality.
+Classification and regression trees do an excellent job of fitting a model to the training data. Unfortunately, decision trees are a little too good and they overfit like mad, meaning that they do not generalize well to previously-unseen test data. To increase generality, random forests use a collection of decision trees that have been weakened to make them more independent. We trade a bit of accuracy for dramatically improved generality.
 
-A random forest does not feed all data to every decision tree in its collection. Each tree is trained on a bootstrapped version of the original training set. Further, RFs must sometimes forget some of the available features during training. In our case, decision node splitting will be limited to considering a random selection of features of size `max_features`, a hyper parameter not used in our decision trees. Naturally, both of bootstrapping and setting a maximum features per split introduce bias into the individual decision trees. But, averaging results of these tree estimators brings the bias back down. We get the best of both worlds!
+A random forest does not feed all data to every decision tree in its collection. Each tree is trained on a bootstrapped version of the original training set. Further, RFs must sometimes forget some of the available features during training. In our case, decision node splitting will be limited to considering a random selection of features of size `max_features`, a hyper parameter not used in our decision trees. Naturally, both bootstrapping and setting a maximum features per split introduce noise into the predictions of the individual decision trees. But, averaging results of these tree estimators squeezes the noise back down. We get the best of both worlds!
 
 ### Bootstrapping
 
-The goal of bootstrapping for random forests is to train a number of decision trees that are as independent as possible by using different but similar training sets.  Each tree trains on a slightly different subset of the training data. Bootstrapping, in theory, asks the underlying distribution that generated the data to generate another independent sample. In practice, bootstrapping gets about 2/3 of the X rows, leaving 1/3 "out of bag" (OOB). See [sklearn's resample function](https://scikit-learn.org/stable/modules/generated/sklearn.utils.resample.html) for a handy way to get a list of indexes to help create a bootstrap sample training set. For example, if I have a numpy array with a list of indexes in `idx` from `X`, then `X[idx]`  is a list of rows from 2D matrix `X`.
+The goal of bootstrapping for random forests is to train a number of decision trees that are as independent and identically distributed as possible by using different but similar training sets.  Each tree trains on a slightly different subset of the training data. Bootstrapping, in theory, asks the underlying distribution that generated the data to generate another independent sample. In practice, bootstrapping gets about 2/3 of the X rows, leaving 1/3 "out of bag" (OOB). See [sklearn's resample function](https://scikit-learn.org/stable/modules/generated/sklearn.utils.resample.html) for a handy way to get a list of indexes to help create a bootstrap sample training set. For example, if I have a numpy array with a list of indexes in `idx` from `X`, then `X[idx]`  is a list of rows from 2D matrix `X`.
 
 The algorithm for fitting a random forest is then:
 
-<img src="images/fit.png" width="60%">
+<img src="images/fit.png" width="50%">
 
 
 ### Changes to decision tree training
@@ -51,11 +51,11 @@ A `LeafNode` obviously just returns itself (`self`) rather than the prediction.
 
 The second change is in the training mechanism. The  decision tree for looks like:
 
-<img src="images/dtreefit.png" width="60%">
+<img src="images/dtreefit.png" width="50%">
 
 For fitting conventional decision trees, `bestsplit()` exhaustively scans all available features and the feature values looking for the optimal variable/split combination. To reduce overfitting, each split should pick from a random subset of the features; the subset size is the hyper perimeter `max_features`.  Function `np.random.choice()` is useful here to get a list of feature indexes and then `X[:, i]` gives us the ith column.  In my solution,  the change is to the outermost loop in `find_best_split()`:
 
-<img src="images/bestsplit.png" width="70%">
+<img src="images/bestsplit.png" width="60%">
 
 ### RF Prediction
 
@@ -63,9 +63,9 @@ Once we've trained a forest of decision trees, we can make predictions for one o
 
 For classification, it's a little more complicated because we need a majority vote across all trees.  As with regression, go through all of the trees, and get the leaves associated with the prediction of a single feature vector.  Create a numpy array, say, `class_counts` that is big enough so that the maximum integer representing a class is a valid index in the array. Then, increment `class_counts[y]` for each `y` in each leaf associated with `x` test vector.  Here are the algorithms:
 
-<img src="images/predict-regr.png" width="70%">
+<img src="images/predict-regr.png" width="60%">
 
-<img src="images/predict-class.png" width="50%">
+<img src="images/predict-class.png" width="40%">
 
 ###  Regressor and classifier class definitions
 
@@ -95,6 +95,8 @@ class RandomForest621:
         mimic sklearn.
         """
         ...
+        if self.oob_score:
+            self.oob_score_ = ... compute OOB score ...
 ```
 
 ```
@@ -152,9 +154,9 @@ The R^2 and accuracy scores for OOB observations is an accurate estimate of the 
 
 A bootstrapped sample is roughly 2/3 of the training records for any given tree, which leaves 1/3 of the samples (OOB) as test set. After training each decision tree, keep track of the OOB records in the tree.  For example, I do `t.oob_idxs = ...` inside my `fit()` method (for each tree `t`).  After training all trees in `fit()`, loop through the trees again and compute the OOB score, if hyperparameter `self.oob_score` is true. Save the score in `self.oob_score_` for either the RF regressor or classifier object, which is consistent with the sklearn implementation. See the class lecture slides for more details, but here are the algorithms again:
 
-<img src="images/oob-score-regr.png" width="80%">
+<img src="images/oob-score-regr.png" width="60%">
 
-<img src="images/oob-score-class.png" width="80%">
+<img src="images/oob-score-class.png" width="60%">
 
 ### Speed issues
 
@@ -339,7 +341,7 @@ breast_cancer_oob: 621 accuracy score 0.97, 0.94
 breast_cancer_oob: Sklearn accuracy score 0.99, 0.94
 =============================== warnings summary ===============================
 ...
-================= 26 passed, 17 warnings in 131.47s (0:02:11) ==================
+================= 26 passed, 3 warnings in 181.61s (0:03:01) ==================
 ```
 
 PyCharm knows how to do this as well, if you look at the configurations and add `-n 6` or `-n 8` as an additional argument to run six unit tests at once::
@@ -350,9 +352,9 @@ There are 8 OOB tests and each failed test costs you 1%, for total of 92% maximu
 
 The other unit tests check basic regression classification but also try out combinations of `max_features`, `min_samples_leaf`, `n_estimators`.   For the non-OOB tests, each failed test cost you 5%.
 
-I also have created a hidden test on a different data set and failing it costs 14% of your grade. (F19 only 10%)
+I also have created a hidden test on a different data set and failing it costs 14% of your grade.
 
-*My test passes in roughly 45 seconds and you will lose 10% if all tests takes longer than about 90 seconds total, running in parallel with -n 8.*
+*My test passes in roughly 1 minute for test_rf, running in parallel with -n 8, and you will lose 10% if all tests takes longer than about 2 minutes total.*
 
 ### Automatic testing using github actions
 
